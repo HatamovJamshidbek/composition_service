@@ -1,0 +1,1 @@
+insert into   tracks(id,name)  values ('1','2')
