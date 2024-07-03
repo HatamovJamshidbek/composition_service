@@ -4,7 +4,6 @@ import (
 	pb "composition_service/genproto"
 	"composition_service/storage/postgres"
 	"context"
-	"google.golang.org/grpc"
 )
 
 type CompositionService struct {
@@ -14,9 +13,9 @@ type CompositionService struct {
 }
 
 func NewCompositionService(db *postgres.CompositionRepository, db2 *postgres.TrackRepository) *CompositionService {
-	return &CompositionService{DB: db}
+	return &CompositionService{DB: db, Db: db2}
 }
-func (service *CompositionService) CreateComposition(ctx context.Context, in *pb.CreateCompositionRequest, opts ...grpc.CallOption) (*pb.Void, error) {
+func (service *CompositionService) CreateComposition(ctx context.Context, in *pb.CreateCompositionRequest) (*pb.Void, error) {
 	response, err := service.DB.CreateComposition(in)
 	if err != nil {
 		return nil, err

@@ -3,6 +3,7 @@ package postgres
 import (
 	pb "composition_service/genproto"
 	"database/sql"
+	"fmt"
 	"time"
 )
 
@@ -15,28 +16,31 @@ func NewCompositionRepository(db *sql.DB) *CompositionRepository {
 }
 
 func (repo CompositionRepository) CreateComposition(composition *pb.CreateCompositionRequest) (*pb.Void, error) {
-	_, err := repo.Db.Exec("insert into compositions(user_id,title,decription,status,created_at)", composition.UserId, composition.Title, composition.Description, composition.Status, time.Now())
+	_, err := repo.Db.Exec("insert into compositions(user_id,title,description,status,created_at) values ($1,$2,$3,$4,$5)", composition.UserId, composition.Title, composition.Description, composition.Status, time.Now())
 	if err != nil {
+		fmt.Println("______________+++++++++++++++++++++++", err)
 		return nil, err
 	}
 	return &pb.Void{}, nil
 }
 func (repo CompositionRepository) UpdateComposition(composition *pb.UpdateCompositionRequest) (*pb.Void, error) {
-	_, err := repo.Db.Exec("update compositions set user_id=$1,title=$2,decription=$3,status=$4,updated_at=$5 where id=$6 and deleted_at=0)", composition.UserId, composition.Title, composition.Description, composition.Status, time.Now(), composition.Id)
+	_, err := repo.Db.Exec("update compositions set user_id=$1,title=$2,description=$3,status=$4,updated_at=$5 where id=$6 and deleted_at is null", composition.UserId, composition.Title, composition.Description, composition.Status, time.Now(), composition.Id)
 	if err != nil {
+		fmt.Println("+-------", err)
 		return nil, err
 	}
 	return &pb.Void{}, nil
 }
 func (repo CompositionRepository) DeleteComposition(id *pb.IdRequest) (*pb.Void, error) {
-	_, err := repo.Db.Exec("update compositions set deleted_at=$1 where id=$2 and deleted_at is null)", time.Now(), id)
+	_, err := repo.Db.Exec("update compositions set deleted_at=$1 where id=$2 and deleted_at is null", time.Now(), id.Id)
 	if err != nil {
+		fmt.Println(")-------", err)
 		return nil, err
 	}
 	return &pb.Void{}, nil
 }
 func (repo CompositionRepository) GetCompositionById(id *pb.IdRequest) (*pb.CompositionResponse, error) {
-	rows, err := repo.Db.Query("select user_id,title ,decription, status from compositions  where id=$1 and deleted_at is null)", id)
+	rows, err := repo.Db.Query("select user_id,title ,description, status from compositions  where id=$1 and deleted_at is null", id.Id)
 	if err != nil {
 		return nil, err
 	}
@@ -107,15 +111,16 @@ func (repo CompositionRepository) GetCompositionById(id *pb.IdRequest) (*pb.Comp
 //	return &compositions, err
 //}
 
-func (repo CompositionRepository) GetCompositionByUserId(userId *pb.IdRequest) (*pb.CompositionsResponse, error) {
-	rows, err := repo.Db.Query("select title ,decription, status from compositions  where user_id=$1 and deleted_at is null)", userId)
+func (repo CompositionRepository) GetCompositionByUserId(id *pb.IdRequest) (*pb.CompositionsResponse, error) {
+	rows, err := repo.Db.Query("select title ,description, status from compositions  where user_id=$1 and deleted_at is null", id.Id)
 	if err != nil {
+		fmt.Println("___________", err)
 		return nil, err
 	}
 	var compositions []*pb.CompositionResponse
 	for rows.Next() {
 		var composition pb.CompositionResponse
-		err := rows.Scan(&composition.UserId, &composition.Title, &composition.Description, &composition.Status)
+		err := rows.Scan(&composition.Title, &composition.Description, &composition.Status)
 		if err != nil {
 			return nil, err
 		}

@@ -4,7 +4,7 @@
 // - protoc             v5.27.1
 // source: composition.proto
 
-package genprotos
+package genproto
 
 import (
 	context "context"

@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/migrations/000001_composition.down.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/migrations/000001_composition.up.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/migrations/000002_track.down.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/migrations/000002_track.up.sql" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/query.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/storage/postgres/composition.go" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/storage/postgres/track.go" dialect="GenericSQL" />

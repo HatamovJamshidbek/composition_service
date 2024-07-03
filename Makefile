@@ -1,4 +1,4 @@
-DB_URL='postgres://postgres:1111@localhost:5433/gollang?sslmode=disable'
+DB_URL='postgres://postgres:1111@localhost:5433/composition?sslmode=disable'
 run:
 	go run server/main.go
 mig-up:
@@ -10,7 +10,7 @@ mig-force:
 mig-goto:
 	migrate -database ${DB_URL} -path migrations goto 1
 mig-file:
-	migrate create -ext sql -dir migrations -seq composition
+	migrate create -ext sql -dir migrations -seq track
 
 mod:
 	go mod init composition_service

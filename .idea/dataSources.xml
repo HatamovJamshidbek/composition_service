@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="gollang@localhost" uuid="1e5b1667-fdb7-42e6-b59c-464f52f99019">
+    <data-source source="LOCAL" name="composition@localhost" uuid="7decb920-2002-4d05-848a-cb0867ee1a1b">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://localhost:5433/gollang</jdbc-url>
+      <jdbc-url>jdbc:postgresql://localhost:5433/composition</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

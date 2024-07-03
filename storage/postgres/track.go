@@ -5,6 +5,7 @@ import (
 	"composition_service/help"
 	"composition_service/models"
 	"database/sql"
+	"fmt"
 	"time"
 )
 
@@ -12,27 +13,31 @@ type TrackRepository struct {
 	Db *sql.DB
 }
 
-func NewTrackRepository(db *sql.DB) *CompositionRepository {
-	return &CompositionRepository{Db: db}
+func NewTrackRepository(db *sql.DB) *TrackRepository {
+	return &TrackRepository{Db: db}
 }
 
 func (repo TrackRepository) CreateTrack(track *pb.CreateTrackRequest) (*pb.Void, error) {
-	_, err := repo.Db.Exec("insert into compositions(composition_id,user_id,title,file_url,created_at)", track.CompositionId, track.UserId, track.Title, track.FileUrl, time.Now())
+	_, err := repo.Db.Exec("insert into tracks(composition_id,user_id,title,file_url,created_at) values ($1,$2,$3,$4,$5)", track.CompositionId, track.UserId, track.Title, track.FileUrl, time.Now())
 	if err != nil {
+		fmt.Println(")))))))))))))))", err)
 		return nil, err
 	}
 	return &pb.Void{}, nil
 }
 func (repo TrackRepository) UpdateTrack(track *pb.UpdateTrackRequest) (*pb.Void, error) {
-	_, err := repo.Db.Exec("update tracks set composition_id=$1,user_id=$2,title=$3,file_url=$4,updated_at=$5 where id=$6 and deleted_at=0 and composition_id=$7)", track.CompositionId, track.Userid, track.Title, track.FileUrl, time.Now(), track.Id, track.CompositionId)
+	_, err := repo.Db.Exec("update tracks set composition_id=$1,user_id=$2,title=$3,file_url=$4,updated_at=$5 where id=$6 and deleted_at is null and composition_id=$7", track.CompositionId, track.Userid, track.Title, track.FileUrl, time.Now(), track.Id, track.CompositionId)
 	if err != nil {
+		fmt.Println("+++++++++++", err)
 		return nil, err
 	}
 	return &pb.Void{}, err
 }
 func (repo TrackRepository) DeleteTrack(track *pb.DeleteTrackRequest) (*pb.Void, error) {
-	_, err := repo.Db.Exec("update tracks set deleted_at=$1 where id=$2 and deleted_at is null and  composition_id=$3)", time.Now(), track.TrackId, track.CompositionId)
+	_, err := repo.Db.Exec("update tracks set deleted_at=$1 where id=$2 and deleted_at is null and  composition_id=$3", time.Now(), track.TrackId, track.CompositionId)
 	if err != nil {
+		fmt.Println("+++++++++++", err)
+
 		return nil, err
 	}
 	return &pb.Void{}, nil
