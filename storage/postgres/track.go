@@ -28,7 +28,7 @@ func (repo TrackRepository) CreateTrack(track *pb.CreateTrackRequest) (*pb.Void,
 func (repo TrackRepository) UpdateTrack(track *pb.UpdateTrackRequest) (*pb.Void, error) {
 	_, err := repo.Db.Exec("update tracks set composition_id=$1,user_id=$2,title=$3,file_url=$4,updated_at=$5 where id=$6 and deleted_at is null and composition_id=$7", track.CompositionId, track.Userid, track.Title, track.FileUrl, time.Now(), track.Id, track.CompositionId)
 	if err != nil {
-		fmt.Println("+++++++++++", err)
+		fmt.Println("+++++++++++_________________________", err)
 		return nil, err
 	}
 	return &pb.Void{}, err

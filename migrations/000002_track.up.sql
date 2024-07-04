@@ -1,6 +1,6 @@
 CREATE TABLE tracks (
                         id uuid primary key default gen_random_uuid(),
-                        composition_id uuid,
+                        composition_id uuid not null  references compositions(id),
                         user_id uuid,
                         title VARCHAR(100) NOT NULL,
                         file_url VARCHAR(255) NOT NULL,
